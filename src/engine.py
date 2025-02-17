@@ -2,15 +2,18 @@
 class Value:
     '''Class for Value data and its operations.'''
 
-    def __init__(self, data, _children=(), _op=''):
+    def __init__(self, data, _children=(), _op='', label=''): # constructor
         self.data = data
         self.grad = 0
-        # internal variables used for autograd graph construction
         self._backward = lambda: None
         self._prev = set(_children)
-        self._op = _op # the op that produced this node, for graphviz / debugging / etc
+        self._op = _op
+        self.label = label
+    
+    def __repr__(self): # string representation
+        return f"Value(data={self.data}, grad={self.grad})"
 
-    def __add__(self, other):
+    def __add__(self, other): # self + other
         other = other if isinstance(other, Value) else Value(other)
         out = Value(self.data + other.data, (self, other), '+')
 
@@ -21,7 +24,7 @@ class Value:
 
         return out
 
-    def __mul__(self, other):
+    def __mul__(self, other): # self * other
         other = other if isinstance(other, Value) else Value(other)
         out = Value(self.data * other.data, (self, other), '*')
 
@@ -32,8 +35,8 @@ class Value:
 
         return out
 
-    def __pow__(self, other):
-        assert isinstance(other, (int, float)), "only supporting int/float powers for now"
+    def __pow__(self, other): # self ** other
+        assert isinstance(other, (int, float)), "only supporting int/float powers"
         out = Value(self.data**other, (self,), f'**{other}')
 
         def _backward():
@@ -42,7 +45,7 @@ class Value:
 
         return out
 
-    def relu(self):
+    def relu(self): # ReLU function
         out = Value(0 if self.data < 0 else self.data, (self,), 'ReLU')
 
         def _backward():
@@ -51,9 +54,7 @@ class Value:
 
         return out
 
-    def backward(self):
-
-        # topological order all of the children in the graph
+    def backward(self): # backpropagation
         topo = []
         visited = set()
         def build_topo(v):
@@ -64,7 +65,6 @@ class Value:
                 topo.append(v)
         build_topo(self)
 
-        # go one variable at a time and apply the chain rule to get its gradient
         self.grad = 1
         for v in reversed(topo):
             v._backward()
@@ -89,6 +89,3 @@ class Value:
 
     def __rtruediv__(self, other): # other / self
         return other * self**-1
-
-    def __repr__(self):
-        return f"Value(data={self.data}, grad={self.grad})"
