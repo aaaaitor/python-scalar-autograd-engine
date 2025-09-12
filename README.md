@@ -1,9 +1,34 @@
-<h1>Basic scalar autograd engine. / Motor autograd escalar básico.</h1>
+# Python Scalar Autograd Engine
 
-[English]<br>
-Autograd engine made with python for neural network training, built from the very basics with simplicity in mind.<br>
-All project explanation in spanish can be found in the [notes](./notebook/notes.ipynb) file.
+A Python implementation of an automatic differentiation (autograd) engine focused on scalar operations, designed specifically for neural network training. Built from the ground up with simplicity and educational purposes in mind.
 
-[Español]<br>
-Motor de autograd creado con python para entrenamiento de redes neuronales, creado desde lo más básico teniendo en mente la simplicidad.<br>
-Toda la explicación del proyecto en español se puede encontrar en el archivo [notas](./notebook/notes.ipynb).
+## Overview
+
+This project implements a scalar autograd engine that can:
+- Track and store variable data in mathematical operations
+- Compute gradients automatically through backpropagation
+- Support basic neural network operations
+- Visualize computation graphs
+
+## Project Structure
+
+The project is organized into two main components:
+
+- `engine.py`: Contains the core autograd functionality
+  - Implementation of the `Value` class for scalar operations
+  - Support for basic operations (+, -, *, /, power)
+  - Implementation of activation functions (ReLU)
+  - Backpropagation capabilities
+
+- `neural_network.py`: Contains the neural network implementation
+  - Neural network architecture
+  - Training utilities
+  - Network optimization
+
+## Detailed Documentation
+
+A comprehensive explanation of the project (in Spanish) can be found in the [notes notebook](./notebook/notes.ipynb), which includes:
+- Detailed explanations of the autograd engine implementation
+- Mathematical foundations and derivations
+- Usage examples and visualizations
+- Neural network training demonstrations
